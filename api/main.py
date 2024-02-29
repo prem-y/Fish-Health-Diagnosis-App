@@ -12,16 +12,14 @@ MODEL = tf.keras.models.load_model("../SavedModel/Fish_Disease_Detection")
 
 
 CLASS_NAMES = ["Healthy Fish", "Infected Fish"]
-
-
-@app.get("/ping")
-async def ping():
-    return "Hello, I am alive"
+INPUT_SIZE = (224, 224)
 
 
 def read_file_as_image(data) -> np.ndarray:
-    image = np.array(Image.open(BytesIO(data)))
-    return image
+    image = Image.open(BytesIO(data))
+    if image.size != INPUT_SIZE:
+        image = image.resize(INPUT_SIZE).convert('RGB')
+    return np.array(image)
 
 
 @app.post("/predict")

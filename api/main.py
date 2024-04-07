@@ -1,5 +1,4 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
-from typing import List
 import numpy as np
 import uvicorn
 from io import BytesIO
@@ -15,7 +14,7 @@ CLASS_NAMES = ["Healthy Fish", "Infected Fish"]
 
 @app.get("/ping")
 async def ping():
-    return "Hello, I am alive"  #check if system is running
+    return "Hello, I am alive!!"  #check if system is running
 
 
 def read_file_as_image(data) -> np.ndarray:
@@ -27,7 +26,7 @@ def read_file_as_image(data) -> np.ndarray:
 async def predict(file: UploadFile = File(...)):
     file_type = imghdr.what("", h=file.file.read(1024))
     if not file_type or file_type not in {"jpeg", "png", "gif"}:
-        raise HTTPException(status_code=400, detail="Invalid image file")   #input validation
+        raise HTTPException(status_code=400, detail="Invalid file.check the filetype and try again")   #input validation
 
     image = read_file_as_image(await file.read())
 
